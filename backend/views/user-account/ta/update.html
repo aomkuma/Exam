@@ -1,0 +1,143 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div>
+	<div class="row form-group">
+	  <div class="col-lg-10 col-lg-offset-1">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        จัดการบัญชี TA
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+	</div>
+
+	<div class="row form-group" ng-form="update_form">
+		<div class="col-lg-10 col-lg-offset-1  col-md-offset-1">
+			<!-- <div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					รหัส tutor
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.TutorCode" required="true" maxlength="3">
+				</div>
+			</div> -->
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ชื่อผู้ใช้งาน
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.UserAccount" required="true" maxlength="100">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					รหัสผ่านใหม่
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="password" class="form-control" ng-model="SecretData.NewPassword" ng-required="Data.AutoID == ''" maxlength="20">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ยืนยันรหัสผ่านใหม่
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="password" class="form-control" ng-model="SecretData.ConfirmNewPassword" ng-required="SecretData.NewPassword != null && SecretData.NewPassword != ''" maxlength="20">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ชื่อเล่น
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.NickName" maxlength="50">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ชื่อจริง
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.FirstName" required="true" maxlength="70">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					นามสกุล
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.LastName" required="true" maxlength="70">
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					เลขที่บัตรประชาชน
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.CardID" required="true" maxlength="13">
+				</div>
+			</div>
+			<fieldset>
+				<legend>ข้อมูลธนาคาร</legend>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ชื่อธนาคาร
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.BankCode" ng-options="data.BankCode as data.BankNameTH for data in BankList">
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ประเภทบัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.BankAccType">
+							<option value="">กรุณาเลือก..</option>
+							<option value="ออมทรัพย์">ออมทรัพย์</option>
+							<option value="กระแสรายวัน">กระแสรายวัน</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ชื่อบัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.BankAccName" required="true" maxlength="100">
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						เลขที่บัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.BankAccNo" required="true" maxlength="50">
+					</div>
+				</div>
+			</fieldset>
+			<div class="row form-group">
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					สถานะผู้ใช้งาน
+				</label>
+				<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" >
+					<div class="btn-group">
+						<label class="btn btn-default btn-checkbox" ng-model="Data.UserStatus" uib-btn-radio="'active'" >ใช้งาน</label>
+			            <label class="btn btn-default btn-checkbox" ng-model="Data.UserStatus" uib-btn-radio="'inactive'" >ไม่ใช้งาน</label>
+			        </div>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-12 text-center">
+					<button class="btn btn-default" ng-click="goBack()">ยกเลิก</button>
+					<button class="btn btn-primary" ng-click="saveData(Data, SecretData)" ng-disabled="update_form.$invalid">บันทึก</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

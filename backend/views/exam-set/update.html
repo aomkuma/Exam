@@ -1,0 +1,119 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div ng-form="update_form">
+	<div class="row form-group">
+	  <div class="col-lg-10 col-lg-offset-1">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        จัดการชุดข้อสอบ
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+	</div>
+
+	<div class="row form-group">
+	  <div class="col-lg-10 col-lg-offset-1">
+	  	<fieldset>
+	  		<legend>ข้อมูลชุดข้อสอบ</legend>
+		  	<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					รหัสเฉพาะ
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" ng-model="Data.ExamSetCode" required="true" maxlength="4" placeholder="ข้อมูล 4 หลัก">
+				</div>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					จำนวนโจทย์
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<input type="number" class="form-control" ng-model="Data.TotalProposition" required="true" min="1" max="9999" placeholder="">
+				</div>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					วิชา
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<select class="form-control" ng-model="Data.SubjectCode" required="true" ng-options="data.SubjectCode as (data.SubjectCode + ' : ' + data.SubjectName) for data in SubjectList">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ระดับ
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<select class="form-control" ng-model="Data.LevelCode" required="true" ng-options="data.LevelCode as (data.LevelCode + ' : ' + data.LevelName) for data in LevelList">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset>
+	  		<legend>ที่มาของข้อสอบ</legend>
+	  		<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					สนามสอบ
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<select class="form-control" ng-model="Data.ExamSourceCode" required="true" ng-options="data.SourceCode as (data.SourceCode + ' : ' + data.SourceName) for data in ExamSourceList">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ปี พ.ศ.
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<select class="form-control" ng-model="Data.Years" required="true" ng-options="data.yearValue as (data.yearValue + ' : ' + data.yearText) for data in YearList">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					เดือน
+				</label>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<select class="form-control" ng-model="Data.Months" required="true" ng-options="data.monthValue as (data.monthValue + ' : ' + data.monthText) for data in MonthList">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+					
+				</div>
+			</div>
+	  	</fieldset>
+
+	  	<fieldset>
+	  		<legend>ข้อมูล Tutor</legend>
+	  		<div class="row form-group">
+			  	<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					รหัส : {{currentUser.TutorData.TutorCode}}
+				</label>
+				<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+					ชื่อ - สกุล : {{currentUser.TutorData.FirstName}} {{currentUser.TutorData.LastName}}
+				</label>
+			</div>
+			<div class="row form-group">
+			  	<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-control-static">
+					รายวิชา : {{currentUser.TutorData.SubjectName}}
+				</label>
+				
+			</div>
+	  	</fieldset>
+	  </div>
+	</div>
+	<div class="row form-group">
+	  	<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="goBack()">ยกเลิก</button>
+			<button class="btn btn-primary" ng-click="saveData(Data)" ng-disabled="update_form.$invalid">บันทึก</button>
+		</div>
+	</div>
+</div>

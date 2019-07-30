@@ -1,0 +1,244 @@
+<div ng-include src="'views/header.html'" ng-show="currentUser != undefined"></div>
+
+<div style="margin-top: 5%;">
+	<div class="row form-group">
+	  <div class="col-lg-10 col-lg-offset-1">
+	    <div class="row">
+	      <div class="col-lg-12 text-center" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        สมัคร Tutor
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="row form-group" ng-form="update_form">
+		<div class="col-lg-10 col-lg-offset-1  col-md-offset-1">
+			<fieldset ng-disabled="true">
+				<legend>ข้อมูลการสมัคร</legend>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						รหัส tutor
+					</label>
+					<div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+						<input type="text" class="form-control" ng-model="Data.TutorCode" required="true" maxlength="3">
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-2 col-xs-6">
+						<!-- <button class="btn btn-info" ng-disabled="Data.TutorCode == null || Data.TutorCode == ''" ng-click="loadData(Data.TutorCode)">ค้นหา</button> -->
+					</div>
+				</div>
+				<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ประเภทการสมัคร
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.RegisterType" required="true">
+							<option value="">กรุณาเลือก</option>
+							<option value="personal">บุคคล</option>
+							<option value="corporation">นิติบุคคล</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ชื่อผู้ใช้งาน (Email)
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.UserAccount" maxlength="100">
+					</div>
+				</div>
+				<!-- <div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						รหัสผ่านใหม่
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="password" class="form-control" ng-model="SecretData.NewPassword" required="true" maxlength="20">
+					</div>
+				</div>
+				<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ยืนยันรหัสผ่านใหม่
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="password" class="form-control" ng-model="SecretData.ConfirmNewPassword" ng-required="SecretData.NewPassword != null && SecretData.NewPassword != ''" maxlength="20">
+					</div>
+				</div> -->
+				<div ng-show="Data.RegisterType == 'personal'">
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ชื่อเล่น
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.NickName" maxlength="50">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ชื่อจริง
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.FirstName" required="true" maxlength="70">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							นามสกุล
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.LastName" required="true" maxlength="70">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							เลขที่บัตรประชาชน
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.CardID" required="true" maxlength="13">
+						</div>
+					</div>
+				</div>
+				<div ng-show="Data.RegisterType == 'corporation'">
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ชื่อบริษัท
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.CompanyName" maxlength="255" required="true">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							สำนักงานใหญ่ / สำนักงานย่อย
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.CompanyOffice" maxlength="255">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							เลขประจำตัวผู้เสียภาษี
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.CardID" maxlength="13" required="true">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ที่อยู่บริษัท
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<textarea class="form-control" ng-model="Data.CompanyAddress" required="true"></textarea>
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ชื่อผู้ประสานงาน
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.FirstName" maxlength="70" required="true">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							นามสกุลผู้ประสานงาน
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.LastName" maxlength="70" required="true">
+						</div>
+					</div>
+					<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+							ชื่อเล่น
+						</label>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<input type="text" class="form-control" ng-model="Data.NickName" maxlength="50">
+						</div>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						เบอร์โทรศัพท์ติดต่อ
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.Mobile" required="true" maxlength="10">
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset  ng-disabled="true" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+				<legend>ข้อมูลธนาคาร</legend>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ชื่อธนาคาร
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.BankCode" ng-options="data.BankCode as data.BankNameTH for data in BankList">
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ประเภทบัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.BankAccType">
+							<option value="">กรุณาเลือก..</option>
+							<option value="ออมทรัพย์">ออมทรัพย์</option>
+							<option value="กระแสรายวัน">กระแสรายวัน</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						ชื่อบัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.BankAccName" required="true" maxlength="100">
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						เลขที่บัญชี
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<input type="text" class="form-control" ng-model="Data.BankAccNo" required="true" maxlength="50">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset  ng-disabled="true" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+				<legend>ข้อมูลรายวิชาที่ต้องการสมัคร</legend>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						รายวิชา
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.SubjectCode" ng-options="data.SubjectCode as data.SubjectName for data in SubjectList">
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">
+				<legend>ข้อมูลการอนุมัติ</legend>
+				<div class="row form-group">
+					<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-control-static">
+						การอนุมัติ
+					</label>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<select class="form-control" ng-model="Data.UserStatus" required="true">
+							<option value="waitingForApprove">กรุณาเลือก..</option>
+							<option value="active">อนุมัติ</option>
+							<option value="inactive">ไม่อนุมัติ</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<div class="row form-group">
+				<div class="col-lg-12 text-center">
+					<button class="btn btn-default" ng-click="goBack()">ยกเลิก</button>
+					<button class="btn btn-primary" ng-click="saveData(Data, SecretData)" ng-disabled="update_form.$invalid" ng-show="Data.AutoID != undefined && Data.AutoID != null && Data.AutoID != ''">บันทึก</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,89 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div>
+	<div class="row form-group">
+	  <div class="col-lg-10 col-lg-offset-1">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        รายชื่อ tutor ที่สมัคร
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+	</div>
+
+		<div class="row form-group">
+			<div class="col col-lg-10 col-lg-offset-1">
+				<div class="row form-group">
+					<label class="form-control-static col-lg-1">
+						ค้นหา
+					</label> 
+					<div class="col-lg-3">
+						<input class="form-control" ng-model="condition.keyword">
+					</div>
+					<div class="col-lg-2">
+						<button class="btn btn-primary" ng-click="search(condition)"> <span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<caption>
+							<!-- <a role="button" class="btn btn-primary btn-sm pull-right" href="#/subject/update/"><span class="glyphicon glyphicon-plus"></span></a> -->
+						</caption>
+						<thead>
+							<tr>
+								<th>วันที่สมัคร</th>
+								<th>รหัส tutor</th>
+								<th>Email</th>
+								<th>ชื่อ - สกุล</th>
+								<th>เบอร์โทรศัพท์ติดต่อ</th>
+								<th>รายวิชา</th>
+								<th>สถานะการอนุมัติ</th>
+								<th>จัดการ</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="data in DataList">
+								<td>{{getDateString(data.TutorRegisterDateTime)}}</td>
+								<td>{{data.TutorCode}}</td>
+								<td>{{data.UserAccount}}</td>
+								<td>
+									<span ng-show="data.RegisterType == 'corporation'">
+										บริษัท {{data.CompanyName}}
+										<br>
+										ผู้ประสานงาน : {{data.FirstName + ' ' + data.LastName}}
+									</span>
+									<span ng-show="data.RegisterType == 'personal'">
+										{{data.FirstName + ' ' + data.LastName}}
+									</span>
+								</td>
+								<td>{{data.Mobile}}</td>
+								<td>({{data.SubjectCode}}) {{data.SubjectName}}</td>
+								<td>
+									<span ng-class="{'label_active' : data.UserStatus == 'active', 'label_inactive' : data.UserStatus == 'inactive', 'label_waiting' : data.UserStatus == 'waitingForApprove'}">{{getStatusName(data.UserStatus)}}</span> 
+								</td>
+								<td align="center"><a role="button" class="btn btn-primary btn-sm" href="#/register/tutor/approval/update/{{data.AutoID}}"><span class="glyphicon glyphicon-edit"></span></a></td>
+							</tr>
+						</tbody>
+					</table>
+					<ul class="pull-right" uib-pagination total-items="Pagination.totalPages" ng-model="Pagination.currentPage" max-size="Pagination.limitDisplay" class="pagination-sm" items-per-page="Pagination.limitRowPerPage" boundary-links="true" force-ellipses="true"  ng-change="pageChanged()"></ul>
+				</div>
+			</div>
+		</div>
+	<div ng-include src="'views/footer.html'"></div>
+</div>
+<style type="text/css">
+	.label_active{
+		color: green;
+	}
+
+	.label_inactive{
+		color: red;
+	}
+
+	.label_waiting{
+		color: orange;
+	}
+</style>
