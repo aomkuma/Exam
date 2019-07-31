@@ -32,7 +32,7 @@
 					เลขข้อ
 				</label>
 				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-					<input type="number" class="form-control" ng-model="Data.QuestionNo" min="1" max="{{ExamSetData.TotalProposition}}">
+					<input type="number" class="form-control" ng-model="Data.QuestionNo" min="1" max="{{ExamSetData.TotalProposition}}" required="true">
 				</div>
 			</div>
 			<div class="row form-group">
@@ -47,7 +47,7 @@
 			<fieldset>
 				<legend>ช้อยส์</legend>
 				<div class="row form-group" ng-repeat="data in ChoiceList">
-					<label class="form-control-static col-lg-1 col-md-1 col-sm-1 col-xs-2 col-lg-offset-1  col-md-offset-1  col-sm-offset-1">
+					<label class="col-lg-1 col-md-1 col-sm-1 col-xs-2 col-lg-offset-1  col-md-offset-1  col-sm-offset-1">
 						{{data.ChoiceNo}}
 					</label>
 					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-10" bind-html-compile="data.ChoiceDescription">
@@ -67,7 +67,7 @@
 				<legend>ตัวเลือกคำตอบ</legend>
 				<div class="row form-group">
 					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-						<select class="form-control" ng-model="Data.CorrectChoiceID" ng-options="data.ChoiceNo as data.ChoiceNo for data in ChoiceList" ng-change="changeAnswer(Data.CorrectChoiceID)">
+						<select class="form-control" ng-model="Data.CorrectChoiceID" ng-options="data.ChoiceNo as data.ChoiceNo for data in ChoiceList" ng-change="changeAnswer(Data.CorrectChoiceID)" required="true">
 							<option value="">ตัวเลือก..</option>
 						</select>
 					</div>
@@ -133,6 +133,13 @@
 			</fieldset>
 		</div>
 	</div>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="goBack()">ยกเลิก</button>
+			<button class="btn btn-primary" ng-click="saveData(Data, ChoiceList)" ng-disabled="update_form.$invalid">บันทึก</button>
+			<button class="btn btn-info" ng-click="questionPreview(Data, ChoiceList)">ดูตัวอย่าง</button>
+		</div>
+	</div>
 </div>
 <div ng-show="ShowChoiceDialog" style="position: absolute; width: 100%; height: 100%; z-index: 999; background-color: #ccc; top: 1px;  display: flex; align-items: center; justify-content: center; left:-5px;">
 	<div style="position: absolute; width:1200px; height: 550px; margin : 0 auto; background-color: #FFF; top: 40%; ">
@@ -153,21 +160,36 @@
 </div>
 
 
-<script type="text/ng-template" id="edit-choice.html">
+<script type="text/ng-template" id="question-preview.html">
 
 	<div class="modal-header  text-center">
-		<h4 class="modal-title">รายละเอียดคำตอบของตัวเลือกข้อ {{Choice.ChoiceNo}}</h4>
+		<h4 class="modal-title">ตัวอย่างผลลัพธ์</h4>
 	</div>
 	<div class="modal-body">
 		<div  class="row">
-			<div class="col-lg-12 form-control-static">
-				<textarea ng-model="Choice.ChoiceDescription" id="editor_choice"></textarea>
+			<div class="col-lg-1" >
+				<b>{{Data.QuestionNo}}</b>
+			</div>
+			<div class="col-lg-11" bind-html-compile="Data.QuestionDescription">
+				
+			</div>
+		</div>
+		<div  class="row">
+			<div class="col-lg-10 col-lg-offset-1">
+				<hr>
+			</div>
+		</div>
+		<div  class="row" ng-repeat="data in ChoiceList">
+			<div class="col-lg-1 col-lg-offset-1">
+				{{data.ChoiceNo}}
+			</div>
+			<div class="col-lg-10" bind-html-compile="data.ChoiceDescription">
+				
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-default" ng-click="ok(Choice)">ตกลง</button>
-		<button class="btn btn-default" ng-click="cancel()">ยกเลิก</button>
+		<button class="btn btn-default" ng-click="cancel()">ปิด</button>
 	</div>
 
 </script>

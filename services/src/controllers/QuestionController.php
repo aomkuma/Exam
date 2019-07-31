@@ -65,11 +65,15 @@
                 $user_session = $obj['user_session'];
                 $AutoID = $obj['obj']['AutoID'];
 
-                $Data = QuestionService::getData($AutoID);  
+                $Data = QuestionService::getData($AutoID); 
 
-                $this->data_result['DATA'] = $Data;
+                // Load choices
+                $ChoiceList = QuestionService::getChoiceData($Data['AutoID']); 
+
+                $this->data_result['DATA']['Question'] = $Data;
+                $this->data_result['DATA']['ChoiceList'] = $ChoiceList;
                 
-                return $this->returnResponse(200, $this->data_result, $response, false);
+                return $this->returnResponse(200, $this->data_result, $response, true);
                 
             }catch(\Exception $e){
                 return $this->returnSystemErrorResponse($this->logger, $this->data_result, $e, $response);
@@ -86,10 +90,19 @@
                 $obj = $request->getParsedBody();
                 $user_session = $obj['user_session'];
                 $Data = $obj['obj']['Data'];
-
+                $ChoiceList = $obj['obj']['ChoiceList'];
+                
                 $Data['UpdateByUserAccount'] = $user_session['AutoID'];
 
+                // Update question first
                 $AutoID = QuestionService::updateData($Data);  
+
+                // Update choice
+                foreach ($ChoiceList as $key => $value) {
+                    unset($value['$hashKey']);
+                    $value['QuestionID'] = $AutoID;
+                    QuestionService::updateChoiceData($value);  
+                }
 
                 $this->data_result['DATA']['AutoID'] = $AutoID;
                 

@@ -35,7 +35,7 @@
 									</label> 
 									<div class="col-lg-9">
 										<a role="button" class="btn btn-primary btn-sm pull-right" href="#/questions/manage/update/{{ExamSetCode}}/"><span class="glyphicon glyphicon-plus"></span></a>
-										<a role="button" class="btn btn-default btn-sm pull-right" href="#/questions/manage/list"><span class="glyphicon glyphicon-arrow-left"></span> ย้อนกลับ</a>
+										<a role="button" class="btn btn-default btn-sm pull-right" href="#/exam-set/manage/list"><span class="glyphicon glyphicon-arrow-left"></span> ย้อนกลับ</a>
 									</div>
 								</div>
 								
@@ -50,7 +50,7 @@
 							<tbody>
 								<tr ng-repeat="data in DataList">
 									<td>{{data.QuestionNo}}</td>
-									<td>{{data.QuestionDescription}}</td>
+									<td  bind-html-compile="data.QuestionDescription"></td>
 									<td align="center">
 										<a role="button" class="btn btn-primary btn-sm" href="#/questions/manage/update/{{ExamSetCode}}/{{data.AutoID}}"><span class="glyphicon glyphicon-edit"></span></a>
 									</td>

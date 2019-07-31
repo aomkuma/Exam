@@ -19,10 +19,10 @@ return [
         ],
         'db' => [
             'driver' => 'sqlsrv',
-            'host' => 'LAPTOP-LL92CALS\SQLEXPRESS',//'54.169.84.115',
+            'host' => '203.151.210.199',//'LAPTOP-LL92CALS\SQLEXPRESS',//'54.169.84.115',
             'database' => 'ExamSystem',//'Exam System',
-            'username' => 'exam',//'saExam',
-            'password' => 'exam#123',//'p0o9i8u7y6',
+            'username' => 'sa',//'exam',//'saExam',
+            'password' => '8*yKjSV2',//exam#123',//'p0o9i8u7y6',
         ]
     ],
 ];

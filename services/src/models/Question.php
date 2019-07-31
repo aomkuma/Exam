@@ -6,9 +6,9 @@ class Question extends \Illuminate\Database\Eloquent\Model {
   	protected $primaryKey = 'AutoID';
   	public $timestamps = false;
   	protected $fillable = array(
-                  // "AutoID",
-                  "QuestionID"
-                  ,"QuestionNo"
+                  // "AutoID"
+                  // "QuestionID"
+                  "QuestionNo"
                   ,"QuestionType"
                   ,"QuestionDescription"
                   ,"AnswerDescription"

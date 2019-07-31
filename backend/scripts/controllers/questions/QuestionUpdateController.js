@@ -23,11 +23,11 @@ angular.module('app').controller('QuestionUpdateController', function($scope, $c
     var ckEditorConfig = {
             extraPlugins: 'uploadimage,filebrowser,colorbutton,eqneditor',
             height: 250,
-            uploadUrl: '../../../../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
-            filebrowserBrowseUrl: '../../../../ckfinder/ckfinder.html',
-            filebrowserImageBrowseUrl: '../../../../ckfinder/ckfinder.html?type=Images',
-            filebrowserUploadUrl: '../../../../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-            filebrowserImageUploadUrl: '../../../../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+            uploadUrl: '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+            filebrowserBrowseUrl: '../ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl: '../ckfinder/ckfinder.html?type=Images',
+            filebrowserUploadUrl: '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl: '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
             contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
             image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
             image2_disableResizer: true,
@@ -95,11 +95,28 @@ angular.module('app').controller('QuestionUpdateController', function($scope, $c
         var params = {'AutoID': AutoID};
 
         HTTPService.clientRequest('questions/manage/get', params).then(function(result){
-            console.log(result);
-            $scope.Data = result.data.DATA;
+            
+            $scope.Data = result.data.DATA.Question;
+            $scope.ChoiceList = result.data.DATA.ChoiceList;
+            console.log($scope.ChoiceList);
+            $scope.changeAnswer($scope.Data.CorrectChoiceID);
+            // $scope.Data.CorrectChoiceID = parseInt($scope.Data.CorrectChoiceID);
+            // $scope.Data.QuestionNo = parseInt($scope.Data.QuestionNo);
 
-            // CKEDITOR.replace( 'editor_question', { toolbar : [ [ 'EqnEditor', 'Bold', 'Italic' ] ] });
-            // CKEDITOR.config.height = '400px';
+            console.log($scope.Data);
+            if (CKEDITOR.instances.editor_question) CKEDITOR.instances.editor_question.destroy();
+
+            CKEDITOR.config.extraPlugins = 'colorbutton,eqneditor';
+            CKEDITOR.config.colorButton_enableAutomatic = false;
+
+            CKEDITOR.replace( 'editor_question',ckEditorConfig );
+
+            if (CKEDITOR.instances.editor_answer_desc) CKEDITOR.instances.editor_answer_desc.destroy();
+
+            CKEDITOR.config.extraPlugins = 'colorbutton,eqneditor';
+            CKEDITOR.config.colorButton_enableAutomatic = false;
+
+            CKEDITOR.replace( 'editor_answer_desc',ckEditorConfig );
 
             IndexOverlayFactory.overlayHide();
         });
@@ -108,11 +125,10 @@ angular.module('app').controller('QuestionUpdateController', function($scope, $c
     $scope.addChoice = function(index){
         $scope.ChoiceList.push({
                         'AutoID':''
-                        ,'ChoiceID':''
                         ,'ChoiceNo':index
                         ,'ChoiceDescription':''
                         ,'ChoiceImageUrl':''
-                        ,'QuestionID':''
+                        ,'QuestionID':$scope.Data.AutoID
                         ,'CreateDateTime':''
                         ,'UpdateDateTime':''
                         ,'UpdateByUserAccount':''
@@ -131,24 +147,28 @@ angular.module('app').controller('QuestionUpdateController', function($scope, $c
         CKEDITOR.replace( 'editor_choice',ckEditorConfig );
 
         $scope.ShowChoiceDialog = true;
-        // var modalInstance = $uibModal.open({
-        //     animation : false,
-        //     templateUrl : 'edit-choice.html',
-        //     size : 'lg',
-        //     scope : $scope,
-        //     controller : 'ModalDialogCtrl',
-        //     resolve : {
-        //         params : function() {
-        //             return {};
-        //         } 
-        //     },
-        // });
-
-        // modalInstance.result.then(function (valResult) {
-            
-        // });
+        
     }
 
+    $scope.questionPreview = function(Data, ChoiceList){
+        $scope.Data.QuestionDescription = CKEDITOR.instances.editor_question.getData();
+        var modalInstance = $uibModal.open({
+            animation : false,
+            templateUrl : 'question-preview.html',
+            size : 'lg',
+            scope : $scope,
+            controller : 'ModalDialogCtrl',
+            resolve : {
+                params : function() {
+                    return {};
+                } 
+            },
+        });
+
+        modalInstance.result.then(function (valResult) {
+            
+        });
+    }
     $scope.closeChoiceDialog = function(){
         $scope.Choice.ChoiceDescription = CKEDITOR.instances.editor_choice.getData();
         $scope.ShowChoiceDialog = false;
@@ -162,28 +182,94 @@ angular.module('app').controller('QuestionUpdateController', function($scope, $c
             }
         }
     }
+
+    $scope.saveData = function(Data, ChoiceList){
+        // Validate data
+
+        /*if(CKEDITOR.instances.editor_question.getData() == ''){
+            alert('กรุณาใส่รายละเอียดของโจทย์');
+            return false;
+        }
+
+        var ChoiceError = false;
+        for(var i = 0; i < ChoiceList.length; i++){
+            var ChoiceDescription = ChoiceList[i].ChoiceDescription;
+            if(ChoiceList[i].ChoiceDescription == ''){
+                ChoiceError = true;
+                break;
+                
+            }
+        }
+
+        if(ChoiceError){
+            alert('กรุณาใส่รายละเอียดตัวเลือกข้อ ' + ChoiceList[i].ChoiceNo);
+                return false;
+        }*/
+
+
+        $scope.alertMessage = 'ต้องการบันทึกข้อมูลโจทย์และตัวเลือกคำตอบข้อนี้ ใช่หรือไม่ ?';
+        var modalInstance = $uibModal.open({
+            animation : false,
+            templateUrl : 'views/dialog_confirm.html',
+            size : 'sm',
+            scope : $scope,
+            backdrop : 'static',
+            controller : 'ModalDialogCtrl',
+            resolve : {
+                params : function() {
+                    return {};
+                } 
+            },
+        });
+
+        modalInstance.result.then(function (valResult) {
+            
+            if(CKEDITOR.instances.editor_answer_desc.getData() != ''){
+                Data.AnswerDescription = CKEDITOR.instances.editor_answer_desc.getData();
+            }
+            Data.QuestionDescription = CKEDITOR.instances.editor_question.getData();
+
+            var params = {'Data' : Data, 'ChoiceList' : ChoiceList};
+            HTTPService.uploadRequest('questions/manage/update', params).then(function(result){
+                console.log(result);
+                if(result.data.STATUS == 'OK'){
+                    alert('บันทึกสำเร็จ');
+                    window.location.href = '#/questions/manage/list/' + $scope.ExamSetCode;
+                }else{
+                    alert(result.data.DATA);
+                }
+                IndexOverlayFactory.overlayHide();
+            });
+        });
+
+    }
+
+    $scope.goBack = function(){
+        window.location.href = '#/questions/manage/list/' + $scope.ExamSetCode;
+    }
+
     $scope.AnswerHTML = null;
     $scope.ChoiceList = [];
     $scope.Data = {
-        "QuestionID" : null
-          ,"QuestionNo" : null
-          ,"QuestionType" : null
-          ,"QuestionDescription" : null
-          ,"AnswerDescription" : null
+        "AutoID" : ''
+          ,"QuestionNo" : ''
+          ,"QuestionType" : 'o' // s (objective, subjective)
+          ,"QuestionDescription" : ''
+          ,"AnswerDescription" : ""
           ,"VdoStatus" : 'N'
-          ,"VdoUrl" : null
-          ,"Remark" : null
+          ,"VdoUrl" : ""
+          ,"Remark" : ""
           ,"RemarkVdoStatus" : 'N'
-          ,"RemarkVdoUrl" : null
-          ,"HardLevel" : null
-          ,"Editable" : null
-          ,"ReleaseStatus" : null
-          ,"ExamSetCode" : null
-          ,"TopicID" : null
-          ,"CorrectChoiceID" : null
-          ,"CreateDateTime" : null
-          ,"UpdateDateTime" : null
-          ,"UpdateByUserAccount" : null
+          ,"RemarkVdoUrl" : ""
+          ,"HardLevel" : ''
+          ,"Editable" : 1
+          ,"ReleaseStatus" : 1
+          ,"ExamSetCode" : $scope.ExamSetCode
+          ,"TopicID" : ''
+          ,"CorrectChoiceID" : ''
+          ,"CreateDateTime" : ''
+          ,"UpdateDateTime" : ''
+          ,"UpdateByUserAccount" : ''
     };
 
     $scope.getExamSetData($scope.ExamSetCode);
